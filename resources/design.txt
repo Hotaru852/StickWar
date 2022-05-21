@@ -1,0 +1,89 @@
+Stickman: (size: 2 blocks)
+- image:array of image
+- health: the amount of damage a stickman can take before it dies
+- color
+- map
+- rect
+- drop
+- shooting
+- aiming
+- facing
+- turn
+- is_alive
+- stamina
+- v_jump
+- health_available
+- end_turn
+- def move_left(map)
+- def move_right(map)
+- def move(map): included jump
+- def dropping
+- def draw(self, surface)
+- def update: return health and armor value after each round
+- def check_alive
+
+Block:
+- image
+- rect
+- def draw(self, surface)
+
+Map:
+- array of block
+- def load_map(self, path)
+- def draw(self, surface)
+
+Bow:
+- stickman
+- map
+- rect
+- arrow_rect
+- startX, startY
+- level: level of the weapn
+- image
+- arrow_image
+- angle
+- power
+- time
+- stop
+- active
+- targets
+- def Trajectory: find the path of arrow
+- def draw: draw weapon to the screen
+- def update: update the current state of the weapon
+- def collision
+
+Spear:
+- level
+- stickman
+- map
+- rect
+- startX, startY
+- level
+- image
+- active
+- active_frames
+- stop
+- targets
+- def draw
+- def update
+- def collision
+
+Play scene:
+- n
+- state
+- font
+- turn
+- players
+- items
+- map
+- def setup_players
+- def text_to_screen
+- def redraw_play_scene
+- def update_play_scene
+
+Account:
+- Username: player's name
+- Password: can hide
+- Coin: how many money left
+- list(Item): items account has
+- History
