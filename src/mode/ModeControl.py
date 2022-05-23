@@ -7,11 +7,13 @@ from src.mode.Help import Help
 from src.mode.Login import Login
 from src.mode.Menu import Menu
 from src.mode.Play import Play
-from src.mode.Login_Signup import Login_Signup
+from src.mode.Welcome import Welcome
 from src.mode.Signup import Signup
 from src.mode.Result import Result
+from src.mode.Scores import Scores
 from src.my_class.file_manager import file_manager
 from play import Play_Scene
+from datetime import datetime
 
 players = None
 window = wx.App()
@@ -45,6 +47,8 @@ def switch_display():
     control.result_panel.winner = play_scene.winner
     control.result_panel.score = play_scene.score
     control.inventory_panel.coins += play_scene.score
+    global users, current_account
+    users[current_account][6].append(str(play_scene.score) + '\'' + datetime.now().strftime("%d/%m/%Y\'%H:%M:%S"))
     pygame.display.quit()
     pygame.quit()
     control.result_panel.initUI()
@@ -69,9 +73,10 @@ class ModeControl(wx.Frame):
         self.help_panel = Help(self)
         self.login_panel = Login(self)
         self.play_panel = Play(self)
-        self.login_signup_panel = Login_Signup(self)
+        self.login_signup_panel = Welcome(self)
         self.signup_panel = Signup(self)
         self.result_panel = Result(self)
+        self.scores_panel = Scores(self)
         self.sizer.AddMany([(self.menu_panel, 1, wx.EXPAND, 0),
                             (self.inventory_panel, 1, wx.EXPAND, 0),
                             (self.help_panel, 1, wx.EXPAND, 0),
@@ -79,7 +84,8 @@ class ModeControl(wx.Frame):
                             (self.play_panel, 1, wx.EXPAND, 0),
                             (self.login_signup_panel, 1, wx.EXPAND, 0),
                             (self.signup_panel, 1, wx.EXPAND, 0),
-                            (self.result_panel, 1, wx.EXPAND, 0)])
+                            (self.result_panel, 1, wx.EXPAND, 0),
+                            (self.scores_panel, 1, wx.EXPAND, 0)])
         self.inventory_panel.Back_button.Bind(wx.EVT_BUTTON, self.show_menu_panel)
         self.help_panel.Back_button.Bind(wx.EVT_BUTTON, self.show_menu_panel)
         self.menu_panel.Inventory_button.Bind(wx.EVT_BUTTON, self.show_inventory_panel)
@@ -97,6 +103,8 @@ class ModeControl(wx.Frame):
         self.login_signup_panel.Signup_button.Bind(wx.EVT_BUTTON, self.show_signup_panel)
         self.signup_panel.Signup_button.Bind(wx.EVT_BUTTON, self.onSignup)
         self.result_panel.Ok_button.Bind(wx.EVT_BUTTON, self.show_menu_panel)
+        self.scores_panel.Back_button.Bind(wx.EVT_BUTTON, self.show_menu_panel)
+        self.menu_panel.Scores_button.Bind(wx.EVT_BUTTON, self.show_scores_panel)
         self.SetSizer(self.sizer)
         self.inventory_panel.Hide()
         self.help_panel.Hide()
@@ -105,9 +113,9 @@ class ModeControl(wx.Frame):
         self.login_panel.Hide()
         self.signup_panel.Hide()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.SetSize(600, 300)
         self.Centre()
-        self.test = False
 
     def show_menu_panel(self, e):
         self.signup_panel.Hide()
@@ -118,6 +126,7 @@ class ModeControl(wx.Frame):
         self.play_panel.Hide()
         self.login_signup_panel.Hide()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.Layout()
 
     def show_inventory_panel(self, e):
@@ -130,6 +139,7 @@ class ModeControl(wx.Frame):
         self.play_panel.Hide()
         self.login_signup_panel.Hide()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.Layout()
 
     def show_login_panel(self, e):
@@ -143,6 +153,7 @@ class ModeControl(wx.Frame):
         self.play_panel.Hide()
         self.login_signup_panel.Hide()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.Layout()
 
     def show_help_panel(self, e):
@@ -154,6 +165,7 @@ class ModeControl(wx.Frame):
         self.play_panel.Hide()
         self.login_signup_panel.Hide()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.Layout()
 
     def show_login_signup_panel(self, e):
@@ -169,6 +181,7 @@ class ModeControl(wx.Frame):
         self.play_panel.Hide()
         self.login_signup_panel.Show()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.Layout()
 
     def show_play_panel(self, e):
@@ -181,6 +194,7 @@ class ModeControl(wx.Frame):
         self.play_panel.Show()
         self.login_signup_panel.Hide()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.Layout()
 
     def show_signup_panel(self, e):
@@ -195,9 +209,23 @@ class ModeControl(wx.Frame):
         self.play_panel.Hide()
         self.login_signup_panel.Hide()
         self.result_panel.Hide()
+        self.scores_panel.Hide()
         self.Layout()
 
-    # noinspection PyUnresolvedReferences
+    def show_scores_panel(self, e):
+        self.scores_panel.scores = users[current_account][6]
+        self.scores_panel.iniUI()
+        self.signup_panel.Hide()
+        self.menu_panel.Hide()
+        self.inventory_panel.Hide()
+        self.help_panel.Hide()
+        self.login_panel.Hide()
+        self.play_panel.Hide()
+        self.login_signup_panel.Hide()
+        self.result_panel.Hide()
+        self.scores_panel.Show()
+        self.Layout()
+
     def save_account(self):
         fm = file_manager()
         users[current_account][2] = self.inventory_panel.bow_level
@@ -220,7 +248,8 @@ class ModeControl(wx.Frame):
                 switch_display()
 
     def exitGame(self, e):
-        self.save_account()
+        if logging_out:
+            self.save_account()
         self.Close()
 
     def onLogin(self, e):

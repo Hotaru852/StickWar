@@ -35,7 +35,7 @@ class Inventory(wx.Panel):
         self.Potion_level_label = wx.StaticText(self)
         self.first_sizer.AddMany([(self.Back_button, 0, wx.LEFT, 5), (self.Coin_display, 0, wx.LEFT, 420)])
         self.second_sizer = wx.GridSizer(4, 3, 5, 5)
-        self.second_sizer.AddMany([(self.Bow_image, 0, wx.ALIGN_CENTER), (self.Spear_image, 0, wx.ALIGN_CENTER), (self.Potion_image, 0, wx.ALIGN_CENTER),
+        self.second_sizer.AddMany([(self.Bow_image, 0, wx.Bottom | wx.ALIGN_CENTER), (self.Spear_image, 0, wx.ALIGN_CENTER), (self.Potion_image, 0, wx.ALIGN_CENTER),
                                    (self.Bow_level_label, 0, wx.ALIGN_CENTER), (self.Spear_level_label, 0, wx.ALIGN_CENTER), (self.Potion_level_label, 0, wx.ALIGN_CENTER),
                                    (self.Bow_price_display, 0, wx.ALIGN_CENTER), (self.Spear_price_display, 0, wx.ALIGN_CENTER), (self.Potion_price_display, 0, wx.ALIGN_CENTER),
                                    (self.Bow_upgrade_button, 0, wx.ALIGN_CENTER), (self.Spear_upgrade_button, 0, wx.ALIGN_CENTER),(self.Potion_upgrade_button, 0, wx.ALIGN_CENTER)])
@@ -46,7 +46,7 @@ class Inventory(wx.Panel):
         self.SetSize(600, 300)
 
     def initUI(self):
-        self.Bow_image.SetBitmap(getBitmap("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/Bow level " + str(self.bow_level) + ".png"))
+        self.Bow_image.SetBitmap(getBitmap("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/Bow display " + str(self.bow_level) + ".png"))
         self.Spear_image.SetBitmap(getBitmap("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/Spear level " + str(self.spear_level) + ".png"))
         self.Bow_price_display.SetLabel('Price: ' + str(100 * self.bow_level))
         self.Bow_level_label.SetLabel('Level: ' + str(self.bow_level))
@@ -61,7 +61,7 @@ class Inventory(wx.Panel):
             self.coins -= 100 * self.bow_level
             self.Coin_display.SetLabel('Coins: ' + str(self.coins))
             self.bow_level += 1
-            self.Bow_image.SetBitmap(getBitmap("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/Bow level " + str(self.bow_level) + ".png"))
+            self.Bow_image.SetBitmap(getBitmap("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/Bow display " + str(self.bow_level) + ".png"))
             self.Bow_price_display.SetLabel('Price: ' + str(100 * self.bow_level))
             self.Bow_level_label.SetLabel('Level: ' + str(self.bow_level))
         else:
