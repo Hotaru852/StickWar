@@ -3,7 +3,9 @@ from src.my_class.Map import Map
 from src.config import *
 
 
+#Stickman
 class StickMan:
+    #Khoi tao stickman
     def __init__(self, color, potion_level,  map=Map(map_path)):
         self.image = pygame.image.load("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/figure-L1.gif")
         self.images_left = [
@@ -33,6 +35,7 @@ class StickMan:
         self.weapon = None
         self.heal_level = potion_level
 
+    #Di chuyen stickman sang ben trai
     def move_left(self, map: Map):
         if self.sta <= 0:
             return
@@ -45,6 +48,7 @@ class StickMan:
                 self.rect = self.rect.move(1, 0)
                 return
 
+    #Di chuyen stickman sang ben phai
     def move_right(self, map: Map):
         if self.sta <= 0:
             return
@@ -57,6 +61,7 @@ class StickMan:
                 self.rect = self.rect.move(-1, 0)
                 return
 
+    #Stickman roi tu do
     def dropping(self):
         if self.drop:
             self.rect = self.rect.move(0, 1 - self.v_jump)
@@ -70,6 +75,7 @@ class StickMan:
                 break
         self.drop = (num_collided == 0)
 
+    #Stickman di chuyen
     def move(self, map: Map, events):
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT] and not self.aiming:
@@ -99,12 +105,14 @@ class StickMan:
         if self.v_jump > 0:
             self.v_jump -= 1
 
+    #Cap nhat trang thai hien tai cua stickman
     def update(self, events):
         self.dropping()
         self.check_alive()
         if self.turn:
             self.move(self.map, events)
 
+    #Ve stickman len pygame display
     def draw(self, surface):
         surface.blit(self.image, self.rect.topleft)
         pygame.draw.rect(surface, (200, 200, 200), ((self.rect.left, self.rect.top - 5), (stickman_width, 5)))
@@ -114,6 +122,7 @@ class StickMan:
             pygame.draw.rect(surface, GREEN, ((self.rect.left, self.rect.top - 10), (stickman_width * self.sta/stamina_max, 5)))
             pygame.draw.circle(surface, RED, self.rect.move(stickman_width/2, -12).topleft, 2)
 
+    #Kiem tra xem stickman con song khong
     def check_alive(self):
         if not self.rect.colliderect(pygame.Rect(0, 0, screen_width, screen_height)) or self.health <= 0:
             self.is_alive = False

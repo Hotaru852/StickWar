@@ -1,13 +1,16 @@
 import wx
 
 
+#Lay bitmap cua anh
 def getBitmap(path):
     image = wx.Image(path)
     image.Rescale(65, 65, wx.IMAGE_QUALITY_HIGH)
     return image.ConvertToBitmap()
 
 
+#Inventory panel
 class Inventory(wx.Panel):
+    #Khoi tao inventory panel
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.bow_level = None
@@ -45,6 +48,7 @@ class Inventory(wx.Panel):
         self.SetSizer(self.sizer)
         self.SetSize(600, 300)
 
+    #Khoi tao UI cua inventory panel
     def initUI(self):
         self.Bow_image.SetBitmap(getBitmap("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/Bow display " + str(self.bow_level) + ".png"))
         self.Spear_image.SetBitmap(getBitmap("/home/kiseki/PycharmProjects/Group-12-Software-Engineering/resources/Spear level " + str(self.spear_level) + ".png"))
@@ -56,6 +60,7 @@ class Inventory(wx.Panel):
         self.Potion_level_label.SetLabel('Level: ' + str(self.potion_level))
         self.Coin_display.SetLabel('Coins: ' + str(self.coins))
 
+    #Nang cap bow
     def upgradeBow(self, e):
         if self.bow_level <= 3 and self.coins >= self.bow_level * 100:
             self.coins -= 100 * self.bow_level
@@ -67,6 +72,7 @@ class Inventory(wx.Panel):
         else:
             wx.MessageBox('Can\'t upgrade', 'Error', wx.OK | wx.ICON_ERROR)
 
+    #Nang cap spear
     def upgradeSpear(self, e):
         if self.spear_level <= 3 and self.coins >= self.spear_level * 100:
             self.coins -= 100 * self.spear_level
@@ -78,6 +84,7 @@ class Inventory(wx.Panel):
         else:
             wx.MessageBox('Can\'t upgrade', 'Error', wx.OK | wx.ICON_ERROR)
 
+    #Nang cap potion
     def upgradePotion(self, e):
         if self.potion_level <= 3 and self.coins >= self.potion_level * 100:
             self.coins -= 100 * self.potion_level

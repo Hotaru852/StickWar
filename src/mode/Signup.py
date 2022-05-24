@@ -1,7 +1,9 @@
 import wx
 
 
+#Signup panel
 class Signup(wx.Panel):
+    #Khoi tao signup panel
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.sizer = wx.BoxSizer(wx.VERTICAL)

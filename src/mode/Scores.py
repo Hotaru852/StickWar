@@ -1,8 +1,11 @@
 import wx
 import wx.lib.mixins.listctrl as listmix
+from queue import Empty
 
 
+#Score panel
 class Scores(wx.Panel, listmix.ColumnSorterMixin):
+    #Khoi tao scores panel
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
@@ -16,6 +19,7 @@ class Scores(wx.Panel, listmix.ColumnSorterMixin):
         self.SetSizer(self.sizer)
         self.SetSize(600, 300)
 
+    #Khoi tao UI cua scores panel
     def iniUI(self):
         data = []
         self.scores_list.ClearAll()
@@ -34,40 +38,43 @@ class Scores(wx.Panel, listmix.ColumnSorterMixin):
             self.scores_list.SetItemData(index, key)
         self.Bind(wx.EVT_LIST_COL_CLICK, self.onColClick, self.scores_list)
 
+    #Sort column khi click chuot
     def onColClick(self, e):
-        count = self.scores_list.GetItemCount()
-        col1_data, col2_data = [], []
-        for row in range(count):
-            item1 = self.scores_list.GetItem(row, 0)
-            item2 = self.scores_list.GetItem(row, 1)
-            col1_data.append(item1.GetText())
-            col2_data.append(item2.GetText())
-        col1_ascending, col1_descending, col2_ascending, col2_descending = [True, True, True, True]
-        for index in range(count - 1):
-            if col1_data[index] > col1_data[index+1]:
-                col1_ascending = False
-            elif col1_data[index] < col1_data[index+1]:
-                col1_descending = False
-            if col2_data[index] > col2_data[index + 1]:
-                col2_ascending = False
-            elif col2_data[index] < col2_data[index + 1]:
-                col2_descending = False
-        col1 = self.scores_list.GetColumn(0)
-        col2 = self.scores_list.GetColumn(1)
-        if col1_ascending:
-            col1.SetText('Score ▲')
-        if col1_descending:
-            col1.SetText('Score ▼')
-        if col2_ascending:
-            col2.SetText('Date\\Time ▲')
-        if col2_descending:
-            col2.SetText('Date\\Time ▼')
-        if not col1_ascending and not col1_descending:
-            col1.SetText('Score')
-        if not col2_ascending and not col2_descending:
-            col2.SetText('Date\\Time')
-        self.scores_list.SetColumn(0, col1)
-        self.scores_list.SetColumn(1, col2)
+        if self.scores is not Empty:
+            count = self.scores_list.GetItemCount()
+            col1_data, col2_data = [], []
+            for row in range(count):
+                item1 = self.scores_list.GetItem(row, 0)
+                item2 = self.scores_list.GetItem(row, 1)
+                col1_data.append(item1.GetText())
+                col2_data.append(item2.GetText())
+            col1_ascending, col1_descending, col2_ascending, col2_descending = [True, True, True, True]
+            for index in range(count - 1):
+                if col1_data[index] > col1_data[index + 1]:
+                    col1_ascending = False
+                elif col1_data[index] < col1_data[index + 1]:
+                    col1_descending = False
+                if col2_data[index] > col2_data[index + 1]:
+                    col2_ascending = False
+                elif col2_data[index] < col2_data[index + 1]:
+                    col2_descending = False
+            col1 = self.scores_list.GetColumn(0)
+            col2 = self.scores_list.GetColumn(1)
+            if col1_ascending:
+                col1.SetText('Score ▲')
+            if col1_descending:
+                col1.SetText('Score ▼')
+            if col2_ascending:
+                col2.SetText('Date\\Time ▲')
+            if col2_descending:
+                col2.SetText('Date\\Time ▼')
+            if not col1_ascending and not col1_descending:
+                col1.SetText('Score')
+            if not col2_ascending and not col2_descending:
+                col2.SetText('Date\\Time')
+            self.scores_list.SetColumn(0, col1)
+            self.scores_list.SetColumn(1, col2)
 
+    #Tra ve danh sach score
     def GetListCtrl(self):
         return self.scores_list

@@ -5,7 +5,9 @@ from src.my_class.Item import Bow, Spear
 import pygame
 
 
+#Pygame display
 class Play_Scene:
+    #Khoi tao play_scene
     def __init__(self):
         self.turn = 0
         self.score = None
@@ -18,12 +20,14 @@ class Play_Scene:
         self.state = True
         self.winner = None
 
+    #Setup play_scene
     def setup(self, n):
         for i in range(n):
             self.players.append(StickMan(RED, self.potion_level, self.map))
             self.players.append(StickMan(BLUE, self.potion_level, self.map))
         self.score = n * 200
 
+    #Ve len pygame display
     def draw(self, screen: pygame.Surface):
         screen.blit(pygame.image.load(play_back_path), (0, 0))
         self.map.draw(screen)
@@ -32,9 +36,11 @@ class Play_Scene:
         if self.weapon is not None:
             self.weapon.draw(screen)
 
+    #Trang thai hoat dong cua play_scene
     def active(self):
         return self.state
 
+    #Cap nhat play_scene
     def update(self, events):
         for player in self.players:
             player.update(events)

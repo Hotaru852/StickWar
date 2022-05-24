@@ -2,10 +2,13 @@ from queue import Empty
 from src.config import *
 
 
+#Trinh dieu khien file db
 class file_manager:
+    #Khoi tao trinh dieu khien file db
     def __init__(self):
         self.path = database_path
 
+    #Load file db
     def load(self):
         f = open(self.path, "r")
         accounts = []
@@ -20,6 +23,7 @@ class file_manager:
         f.close()
         return accounts
 
+    #Luu vao file db
     def save(self, accounts):
         f = open(self.path, "w")
         for account in accounts:

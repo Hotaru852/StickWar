@@ -1,7 +1,9 @@
 import wx
 
 
+#Help panel
 class Help(wx.Panel):
+    #Khoi chay help panel
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.sizer = wx.BoxSizer(wx.VERTICAL)

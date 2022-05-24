@@ -14,14 +14,16 @@ from src.mode.Scores import Scores
 from src.my_class.file_manager import file_manager
 from play import Play_Scene
 from datetime import datetime
+from queue import Empty
 
-players = None
+players = None #So luong nguoi choi trong 1 team
 window = wx.App()
-current_account = None
-logging_out = False
-users = None
+current_account = None #Account hien tai
+logging_out = False #Kiem tra xem user co logout hay ko
+users = None #Toan bo account trong database
 
 
+#Chuyen doi giua cua so pygame va cua so wxpython
 def switch_display():
     window.ExitMainLoop()
     pygame.init()
@@ -64,7 +66,9 @@ def switch_display():
     window.MainLoop()
 
 
+#Frame chinh, co nhiem vu dieu khien hoat dong cua cac panel con
 class ModeControl(wx.Frame):
+    #Khoi tao frame chinh
     def __init__(self, parent, title):
         super(ModeControl, self).__init__(parent, title=title)
         self.sizer = wx.BoxSizer()
@@ -117,6 +121,7 @@ class ModeControl(wx.Frame):
         self.SetSize(600, 300)
         self.Centre()
 
+    #Show menu panel va an cac panel con lai
     def show_menu_panel(self, e):
         self.signup_panel.Hide()
         self.menu_panel.Show()
@@ -129,6 +134,7 @@ class ModeControl(wx.Frame):
         self.scores_panel.Hide()
         self.Layout()
 
+    #Show inventory panel va an cac panel con lai
     def show_inventory_panel(self, e):
         self.inventory_panel.initUI()
         self.signup_panel.Hide()
@@ -142,6 +148,7 @@ class ModeControl(wx.Frame):
         self.scores_panel.Hide()
         self.Layout()
 
+    #Show login panel va an cac panel con lai
     def show_login_panel(self, e):
         self.login_panel.username_input.Clear()
         self.login_panel.password_input.Clear()
@@ -156,6 +163,7 @@ class ModeControl(wx.Frame):
         self.scores_panel.Hide()
         self.Layout()
 
+    #Show help panel va an cac panel con lai
     def show_help_panel(self, e):
         self.signup_panel.Hide()
         self.menu_panel.Hide()
@@ -168,6 +176,7 @@ class ModeControl(wx.Frame):
         self.scores_panel.Hide()
         self.Layout()
 
+    #Show welcome panel va an cac panel con lai, se save account neu user logout
     def show_login_signup_panel(self, e):
         global logging_out
         if logging_out:
@@ -184,6 +193,7 @@ class ModeControl(wx.Frame):
         self.scores_panel.Hide()
         self.Layout()
 
+    #Show play panel va an cac panel con lai
     def show_play_panel(self, e):
         self.play_panel.input.Clear()
         self.signup_panel.Hide()
@@ -197,6 +207,7 @@ class ModeControl(wx.Frame):
         self.scores_panel.Hide()
         self.Layout()
 
+    #Show signup panel va an cac panel con lai
     def show_signup_panel(self, e):
         self.signup_panel.username_prompt_input.Clear()
         self.signup_panel.password_prompt_input.Clear()
@@ -212,8 +223,10 @@ class ModeControl(wx.Frame):
         self.scores_panel.Hide()
         self.Layout()
 
+    #Show scores panel va an cac panel con lai, dong thoi cap nhat diem so cua scores panel
     def show_scores_panel(self, e):
-        self.scores_panel.scores = users[current_account][6]
+        if users[current_account][6] is not Empty:
+            self.scores_panel.scores = users[current_account][6]
         self.scores_panel.iniUI()
         self.signup_panel.Hide()
         self.menu_panel.Hide()
@@ -226,6 +239,7 @@ class ModeControl(wx.Frame):
         self.scores_panel.Show()
         self.Layout()
 
+    #Luu account cua user
     def save_account(self):
         fm = file_manager()
         users[current_account][2] = self.inventory_panel.bow_level
@@ -234,6 +248,7 @@ class ModeControl(wx.Frame):
         users[current_account][5] = self.inventory_panel.coins
         fm.save(users)
 
+    #Chuyen doi giua pygame va wxpython
     def switchDisplay(self, e):
         check = str(self.play_panel.input.GetValue())
         if check == '':
@@ -247,11 +262,13 @@ class ModeControl(wx.Frame):
                 players = int(check)
                 switch_display()
 
+    #Thoat game
     def exitGame(self, e):
         if logging_out:
             self.save_account()
         self.Close()
 
+    #Trinh dieu khien cua login panel
     def onLogin(self, e):
         username = self.login_panel.username_input.GetValue()
         password = self.login_panel.password_input.GetValue()
@@ -282,6 +299,7 @@ class ModeControl(wx.Frame):
                     self.login_panel.username_input.Clear()
                     self.login_panel.password_input.Clear()
 
+    #Trinh dieu khien cua signup panel
     def onSignup(self, e):
         username = self.signup_panel.username_prompt_input.GetValue()
         password = self.signup_panel.password_prompt_input.GetValue()
@@ -309,6 +327,19 @@ class ModeControl(wx.Frame):
                     self.signup_panel.username_prompt_input.Clear()
                     self.signup_panel.password_prompt_input.Clear()
                     self.signup_panel.password_confirm_input.Clear()
+                    global current_account, users
+                    users = accounts
+                    current_account = account
+                    self.signup_panel.Hide()
+                    self.menu_panel.Show()
+                    self.inventory_panel.Hide()
+                    self.help_panel.Hide()
+                    self.login_panel.Hide()
+                    self.play_panel.Hide()
+                    self.login_signup_panel.Hide()
+                    self.result_panel.Hide()
+                    self.scores_panel.Hide()
+                    self.Layout()
                     return
 
 

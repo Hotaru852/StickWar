@@ -1,7 +1,9 @@
 import wx
 
 
+#Menu panel
 class Menu(wx.Panel):
+    #Khoi tao menu panel
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.sizer = wx.BoxSizer(wx.VERTICAL)

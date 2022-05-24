@@ -1,7 +1,9 @@
 import wx
 
 
+#Play panel
 class Play(wx.Panel):
+    #Khoi tao play panel
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.sizer = wx.BoxSizer(wx.VERTICAL)

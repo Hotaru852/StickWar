@@ -1,7 +1,9 @@
 import wx
 
 
+#Result panel
 class Result(wx.Panel):
+    #Khoi tao result panel
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.Ok_button = wx.Button(self, label='Ok')
@@ -21,6 +23,7 @@ class Result(wx.Panel):
         self.SetSizer(self.sizer)
         self.SetSize(600, 300)
 
+    #Khoi tao UI cua result panel
     def initUI(self):
         self.winner_label.SetLabel(self.winner + ' is the winner!')
         self.score_label.SetLabel('Your score is ' + str(self.score))
